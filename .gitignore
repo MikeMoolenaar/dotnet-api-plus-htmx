@@ -39,4 +39,4 @@ msbuild.wrn
 
 # ====== END TEMPLATE
 
-dotnet-api-plus-htmx/static/*.min.js
+*.min.js
