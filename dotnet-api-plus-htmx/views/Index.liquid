@@ -1,0 +1,12 @@
+{% layout '_layout.liquid' %}
+<hr />
+Hello World from the body
+<hr />
+
+{% block some-content %}
+<div class="content">
+Name: {{ Name }} <br />
+IsComplete: {{ Done }}
+</div>
+{% endblock %}
+<button hx-trigger="click" hx-get="/fragment" hx-target=".content">Get Todo</button>

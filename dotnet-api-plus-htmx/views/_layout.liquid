@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Hello, world!</title>
+
+    <meta name="htmx-config" content='{
+      "allowScriptTags": false,
+      "scrollIntoViewOnBoost": false
+      }'>
+</head>
+<body>
+<h1>Title from the layout</h1>
+<nav hx-boost="true" hx-target="#content">
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+</nav>
+<br>
+<div id="content">
+    {% renderbody %}
+</div>
+
+<script src="static/htmx-1.9.11.min.js"></script>
+
+</body>
+</html>
