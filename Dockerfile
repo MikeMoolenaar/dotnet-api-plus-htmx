@@ -19,5 +19,8 @@ RUN dotnet publish "dotnet-api-plus-htmx.csproj" -c $BUILD_CONFIGURATION -o /app
 
 FROM base AS final
 WORKDIR /app
+
 COPY --from=publish /app/publish .
+COPY --from=build /src/dotnet-api-plus-htmx/views ./views
+COPY --from=build /src/dotnet-api-plus-htmx/static ./static
 ENTRYPOINT ["dotnet", "dotnet-api-plus-htmx.dll"]
