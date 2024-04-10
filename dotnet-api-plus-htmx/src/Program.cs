@@ -1,3 +1,4 @@
+using dotnet_api_plus_htmx;
 using dotnet_api_plus_htmx.Liquid;
 using dotnet_api_plus_htmx.routes;
 using Fluid;
@@ -24,6 +25,7 @@ builder.Services.AddSingleton<CustomFluidViewRenderer>(sp =>
     var options = sp.GetRequiredService<IOptions<FluidViewEngineOptions>>().Value;
     return new CustomFluidViewRenderer(options);
 });
+builder.Services.AddDbContext<AppDbContext>();
 
 
 var app = builder.Build();

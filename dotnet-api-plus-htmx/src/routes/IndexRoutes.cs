@@ -1,5 +1,6 @@
 using dotnet_api_plus_htmx.Liquid;
 using Htmx;
+using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_api_plus_htmx.routes;
 
@@ -20,5 +21,10 @@ public static class IndexRoutes
                 var model = new Todo(2, $"Go back to work! <h1>pwnd! {number}</h1>", false);
                 return CustomResults.Block("Index", "some-content", model);
             });
+        app.MapGet("/todos", async (HttpRequest request, AppDbContext db) =>
+        {
+            var todos = await db.Todos.ToListAsync();
+            return CustomResults.View("Todos", new { todos }, request.IsHtmxBoosted());
+        });
     }
 }
