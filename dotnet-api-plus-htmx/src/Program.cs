@@ -25,10 +25,12 @@ builder.Services.AddSingleton<CustomFluidViewRenderer>(sp =>
     var options = sp.GetRequiredService<IOptions<FluidViewEngineOptions>>().Value;
     return new CustomFluidViewRenderer(options);
 });
-builder.Services.AddDbContext<AppDbContext>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddSqlite<AppDbContext>(connectionString);
 
 
 var app = builder.Build();
+app.Logger.LogInformation("Using db connection string: {0}", connectionString);
 app.UseStaticFiles(new StaticFileOptions
 {
     RequestPath = "/static",

@@ -11,3 +11,8 @@ https://dotnet-api-plus-htmx.fly.dev/
 dotnet tool install --global dotnet-ef
 dotnet ef database update
 ```
+
+## Run
+```sh
+dotnet run
+```
