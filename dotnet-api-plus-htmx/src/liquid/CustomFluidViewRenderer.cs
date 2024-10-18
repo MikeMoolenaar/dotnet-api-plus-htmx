@@ -52,7 +52,7 @@ public class CustomFluidViewRenderer(FluidViewEngineOptions fluidViewEngineOptio
                 ResolveLayoutPath(relativePath, layoutPathString, _fluidViewEngineOptions.ViewsFileProvider);
 
             context.AmbientValues[Constants.ViewPathIndex] = layoutPathString;
-            context.AmbientValues[Constants.BodyIndex] = body;
+            context.AmbientValues[Constants.BodyIndex] = body.Trim();
 
             // Parse the Layout file but ignore viewstarts
             var layoutTemplate = await GetFluidTemplateAsync(layoutPathString,
@@ -62,7 +62,7 @@ public class CustomFluidViewRenderer(FluidViewEngineOptions fluidViewEngineOptio
         }
         else
         {
-            await writer.WriteAsync(body);
+            await writer.WriteAsync(body.Trim());
         }
     }
 

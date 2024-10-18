@@ -39,5 +39,8 @@ msbuild.wrn
 
 # ====== END TEMPLATE
 
-dotnet-api-plus-htmx/static/*.min.js
+dotnet-api-plus-htmx/static/node_modules
+dotnet-api-plus-htmx/static/output.css
+dotnet-api-plus-htmx/static/*.js
+!dotnet-api-plus-htmx/static/tailwind.config.js
 dotnet-api-plus-htmx/data.db*

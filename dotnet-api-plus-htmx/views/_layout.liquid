@@ -1,27 +1,55 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Hello, world!</title>
+  <meta charset="utf-8">
+  <title>Hello, world!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <meta name="htmx-config" content='{
+  <link href="static/output.css" rel="stylesheet"/>
+
+  <script src="static/htmx-2.0.3.js"></script>
+  <script src="static/idiomorph-0.3.0.js"></script>
+  <script src="static/response-targets-2.0.0.js"></script>
+
+  <meta name="htmx-config" content='{
       "allowScriptTags": false,
       "scrollIntoViewOnBoost": false
       }'>
 </head>
-<body>
-<h1>Title from the layout</h1>
-<nav hx-boost="true" hx-target="#content">
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/todos">Todos</a>
-</nav>
-<br>
-<div id="content">
+<body hx-ext="response-targets,morph,preload">
+  <script>
+    let toggleLinks = function() {
+      /** @type {NodeListOf<Element>} */
+      let links = document.querySelectorAll('nav a');
+      for (let link of links) {
+        if (link.getAttribute('href') === document.location.pathname) {
+          link.classList.add('toggled');
+        } else {
+          link.classList.remove('toggled');
+        }
+      }
+    };
+    htmx.on('htmx:pushedIntoHistory', toggleLinks);
+  </script>
+  <nav hx-boost="true" hx-target="#content" class="navbar bg-neutral text-neutral-content">
+    <div class="flex-1">
+      <ul class="menu menu-horizontal px-1">
+        <li>
+          <a href="/" class="text-lg font-bold {% if page == "" %}toggled{% endif %}">htmx + .NET</a>
+        </li>
+      </ul>
+    </div>
+    <ul class="menu menu-horizontal px-1">
+      <li>
+        <a href="/about" class="{% if page == 'about' %}toggled{% endif %}">About</a>
+      </li>
+      <li>
+        <a href="/todos" class="{% if page == 'todos' %}toggled{% endif %}">Todos</a>
+      </li>
+    </ul>
+  </nav>
+  <div id="content" class="p-6">
     {% renderbody %}
-</div>
-
-<script src="static/htmx.org@2.0.3.min.js"></script>
-
+  </div>
 </body>
 </html>

@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rounded-btn: 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  a.toggled, a.toggled:hover, a.toggled:focus {
+    color: oklch(var(--p));
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  a.toggled, a.toggled:hover, a.toggled:focus {
+    color: oklch(var(--pc));
+  }
+}
+
+/* Fix weird animation on load  */
+.btn {
+  animation:unset;
+
+  &:active:focus {
+    animation: button-pop var(--animation-btn, 0.25s) ease-out;
+  }
+}

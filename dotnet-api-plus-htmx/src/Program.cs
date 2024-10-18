@@ -34,7 +34,15 @@ app.Logger.LogInformation("Using db connection string: {0}", connectionString);
 app.UseStaticFiles(new StaticFileOptions
 {
     RequestPath = "/static",
-    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "static"))
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "static")),
+    OnPrepareResponse = ctx =>
+    {
+        if (ctx.File.Name.EndsWith(".js"))
+        {
+            // Cache static js files for a year, because the version is in the filename
+            ctx.Context.Response.Headers.Append("Cache-Control", "public, max-age=31536000, immutable");
+        }
+    }
 });
 
 app.MapIndexRoutes();
