@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Hello, world!</title>
+  <title>{{ page | capitalize }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
   <link href="static/output.css" rel="stylesheet"/>
@@ -16,40 +16,40 @@
       "scrollIntoViewOnBoost": false
       }'>
 </head>
-<body hx-ext="response-targets,morph,preload">
-  <script>
-    let toggleLinks = function() {
-      /** @type {NodeListOf<Element>} */
-      let links = document.querySelectorAll('nav a');
-      for (let link of links) {
-        if (link.getAttribute('href') === document.location.pathname) {
-          link.classList.add('toggled');
-        } else {
-          link.classList.remove('toggled');
-        }
+<body hx-ext="response-targets,morph">
+<script>
+  let toggleLinks = function () {
+    /** @type {NodeListOf<Element>} */
+    let links = document.querySelectorAll('nav a');
+    for (let link of links) {
+      if (link.getAttribute('href') === document.location.pathname) {
+        link.classList.add('toggled');
+      } else {
+        link.classList.remove('toggled');
       }
-    };
-    htmx.on('htmx:pushedIntoHistory', toggleLinks);
-  </script>
-  <nav hx-boost="true" hx-target="#content" class="navbar bg-neutral text-neutral-content">
-    <div class="flex-1">
-      <ul class="menu menu-horizontal px-1">
-        <li>
-          <a href="/" class="text-lg font-bold {% if page == "" %}toggled{% endif %}">htmx + .NET</a>
-        </li>
-      </ul>
-    </div>
+    }
+  };
+  htmx.on('htmx:pushedIntoHistory', toggleLinks);
+</script>
+<nav hx-boost="true" hx-target="#content" class="navbar bg-neutral text-neutral-content">
+  <div class="flex-1">
     <ul class="menu menu-horizontal px-1">
       <li>
-        <a href="/about" class="{% if page == 'about' %}toggled{% endif %}">About</a>
-      </li>
-      <li>
-        <a href="/todos" class="{% if page == 'todos' %}toggled{% endif %}">Todos</a>
+        <a href="/" class="text-lg font-bold {% if page == "Home" %}toggled{% endif %}">htmx + .NET</a>
       </li>
     </ul>
-  </nav>
-  <div id="content" class="p-6">
-    {% renderbody %}
   </div>
+  <ul class="menu menu-horizontal px-1">
+    <li>
+      <a href="/about" class="{% if page == 'about' %}toggled{% endif %}">About</a>
+    </li>
+    <li>
+      <a href="/todos" class="{% if page == 'todos' %}toggled{% endif %}">Todos</a>
+    </li>
+  </ul>
+</nav>
+<div id="content" class="p-6">
+  {% renderbody %}
+</div>
 </body>
 </html>

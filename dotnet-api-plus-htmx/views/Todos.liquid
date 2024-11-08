@@ -1,9 +1,9 @@
 {% layout '_layout.liquid' %}
 {% assign page = "todos" %}
 
+<p>Todos:</p>
 {% for todo in todos %}
-    <p>Todos:</p>
-    <ul>
-        <li>{{ todo.Id }} - {{ todo.Name }}</li>
-    </ul>
+  <ul>
+    <li>{{ todo.Id }} - {{ todo.Name }}</li>
+  </ul>
 {% endfor %}

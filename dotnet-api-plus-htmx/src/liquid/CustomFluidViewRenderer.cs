@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 using Fluid;
 using Fluid.Ast;
 using Fluid.Parser;
@@ -21,6 +22,7 @@ public class CustomFluidViewRenderer(FluidViewEngineOptions fluidViewEngineOptio
     }
 
     private readonly ConcurrentDictionary<IFileProvider, CacheEntry> _cache = new();
+    private readonly ConcurrentDictionary<string, string> _titleCache = new();
 
     public override async Task RenderViewAsync(TextWriter writer, string relativePath, TemplateContext context)
     {
@@ -60,9 +62,32 @@ public class CustomFluidViewRenderer(FluidViewEngineOptions fluidViewEngineOptio
 
             await layoutTemplate.RenderAsync(writer, _fluidViewEngineOptions.TextEncoder, context);
         }
-        else
+        // Fragment views
+        else if (BlockName is not null)
         {
             await writer.WriteAsync(body.Trim());
+        }
+        // Boosted views without layout and including a title tag
+        else
+        {
+            var titleTag = string.Empty;
+            if (_titleCache.TryGetValue(relativePath, out var titleCached))
+            {
+                titleTag = $"<title>{titleCached}</title>";
+            }
+            else if (template is CompositeFluidTemplate {Templates.Count: > 0 } compTemplate && compTemplate.Templates[0] is FluidTemplate fluidTemplate)
+            {
+                var statement = (AssignStatement)fluidTemplate.Statements.FirstOrDefault(x => x is AssignStatement { Identifier: "page" })!;
+                if (statement?.Value is LiteralExpression exp)
+                {
+                    var title = exp.Value.ToStringValue();
+                    title = title[..1].ToUpper() + title[1..].ToLower();
+                    
+                    _titleCache[relativePath] = title;
+                    titleTag = $"<title>{title}</title>";
+                }
+            }
+            await writer.WriteAsync($"{titleTag}\n{body.Trim()}");
         }
     }
 
@@ -106,7 +131,7 @@ public class CustomFluidViewRenderer(FluidViewEngineOptions fluidViewEngineOptio
         {
             var startBlock = "{% block " + BlockName + " %}";
             var blockStart = fileContent.IndexOf(startBlock, StringComparison.Ordinal);
-            var blockEnd = fileContent.IndexOf("{% endblock %}", StringComparison.Ordinal);
+            var blockEnd = fileContent[blockStart..].IndexOf("{% endblock %}", StringComparison.Ordinal);
 
             if (blockStart == -1)
                 throw new ParseException($"Block {BlockName} not found");
@@ -114,7 +139,7 @@ public class CustomFluidViewRenderer(FluidViewEngineOptions fluidViewEngineOptio
                 throw new ParseException($$"""Block {{BlockName}} not closed, expected {% endblock %}""");
 
             var startIndex = blockStart + startBlock.Length;
-            fileContent = fileContent.Substring(startIndex, blockEnd - startIndex).Trim(['\n', ' ']);
+            fileContent = fileContent.Substring(startIndex, blockStart + blockEnd - startIndex).Trim(['\n', ' ']);
         }
 
         if (_fluidViewEngineOptions.Parser.TryParse(fileContent, out var template, out var errors))

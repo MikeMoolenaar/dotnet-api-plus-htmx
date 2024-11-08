@@ -17,7 +17,7 @@ npm install # Install Tailwind & TS
 
 ## Run
 ```sh
-dotnet run
+dotnet watch
 ```
 
 ### TODO
