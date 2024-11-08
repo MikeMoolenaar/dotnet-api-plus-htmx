@@ -9,13 +9,17 @@ https://dotnet-api-plus-htmx.fly.dev/
 ```sh
 dotnet tool install --global dotnet-ef
 dotnet ef database update
+
 cd dotnet-api-plus-htmx/static
-wget https://unpkg.com/htmx.org@2.0.3/dist/htmx.js -O htmx-2.0.3.js
-wget https://unpkg.com/idiomorph@0.3.0/dist/idiomorph-ext.js -O idiomorph-0.3.0.js
-wget https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js -O response-targets-2.0.0.js
+bash init.sh # Download js libs
+npm install # Install Tailwind & TS
 ````
 
 ## Run
 ```sh
 dotnet run
 ```
+
+### TODO
+- [x] Deploy to fly.io and try volumes with a Sqlite db
+- [ ] Make this project some sort of Thuisbezorgd clone 
