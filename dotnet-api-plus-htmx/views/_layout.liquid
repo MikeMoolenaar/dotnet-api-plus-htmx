@@ -31,7 +31,7 @@
   };
   htmx.on('htmx:pushedIntoHistory', toggleLinks);
 </script>
-<nav hx-boost="true" hx-target="#content" class="navbar bg-neutral text-neutral-content">
+<nav hx-boost="true" hx-target="#content" hx-target-404="#content" class="navbar bg-neutral text-neutral-content">
   <div class="flex-1">
     <ul class="menu menu-horizontal px-1">
       <li>
@@ -40,15 +40,18 @@
     </ul>
   </div>
   <ul class="menu menu-horizontal px-1">
-    <li>
+    <li class="px-1">
       <a href="/about" class="{% if page == 'about' %}toggled{% endif %}">About</a>
     </li>
     <li>
       <a href="/todos" class="{% if page == 'todos' %}toggled{% endif %}">Todos</a>
     </li>
+    <li>
+      <a href="/login" class="{% if page == 'login' %}toggled{% endif %}">Login</a>
+    </li>
   </ul>
 </nav>
-<div id="content" class="p-6">
+<div id="content" class="p-6 prose max-w-none">
   {% renderbody %}
 </div>
 </body>

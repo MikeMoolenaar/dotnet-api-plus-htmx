@@ -26,3 +26,7 @@
     animation: button-pop var(--animation-btn, 0.25s) ease-out;
   }
 }
+
+.input:focus {
+  outline-color: hsl(var(--pf));
+}

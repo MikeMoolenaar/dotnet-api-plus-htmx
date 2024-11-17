@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAntiforgery();
 builder.Services.AddFluid(options =>
 {
     options.PartialsFileProvider = new FileProviderMapper(builder.Environment.ContentRootFileProvider, "views");
@@ -45,6 +46,7 @@ app.UseStaticFiles(new StaticFileOptions
     }
 });
 
+app.UseAntiforgery();
 app.MapIndexRoutes();
 app.Run();
 

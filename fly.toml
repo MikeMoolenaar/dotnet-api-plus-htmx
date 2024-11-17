@@ -16,5 +16,12 @@ primary_region = 'ams'
   min_machines_running = 0
   processes = ['app']
 
+[[http_checks.http]]
+  interval = 5000
+  timeout = 2000
+  method = "GET"
+  path = "/"
+  protocol = "https"
+
 [[vm]]
   size = 'shared-cpu-1x'
